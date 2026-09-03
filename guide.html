@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- teckel default favicon -->
+    <link rel="icon" href="favicon.png" sizes="any">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Guide &middot; {{PRACTICE_NAME}} — Management Portal</title>
+
+    <!--
+    =====================================================================
+    Sibling page to Benedict_Template_index.html.
+
+    Per-tenant template: the teckel spawn-script string-replaces nothing
+    on this page today (content is identical for every tenant), but the
+    same per-tenant file naming + GitHub Pages directory placement is
+    kept so future per-practice voice / branding tweaks can ride here.
+
+    Visual language matches the main portal:
+      Background        #002349  (deep navy)
+      Header band       #001a35  (slightly darker navy)
+      Primary text      #ffffff  (white)
+      Steel-blue accent #b0c4de  (subtitle, secondary text, lede)
+      Gold accent       #f0d060  (eyebrow, strong, code)
+      Card tint         rgba(176, 196, 222, 0.05)
+      Font              system-ui sans-serif
+
+    Layout:
+      Centered single column (~820px) for long-form reading. No widget,
+      no iframe, no cost meter — this page is documentation only.
+    =====================================================================
+    -->
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --navy:        #002349;
+            --navy-deep:   #001a35;
+            --steel:       #b0c4de;
+            --gold:        #f0d060;
+            --white:       #ffffff;
+            --card-bg:     rgba(176, 196, 222, 0.05);
+            --card-border: rgba(176, 196, 222, 0.18);
+            --note-bg:     rgba(255, 200, 0, 0.08);
+        }
+
+        html, body {
+            background-color: var(--navy);
+            color: var(--white);
+            font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.5;
+        }
+
+        /* ---------- Top header band (matches index.html) ---------- */
+        header.site-header {
+            background-color: var(--navy-deep);
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+        header.site-header nav.site-nav a {
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid rgba(240, 208, 96, 0.4);
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: border-color 0.15s, background-color 0.15s;
+            display: inline-block;
+        }
+        header.site-header nav.site-nav a:hover {
+            border-color: var(--gold);
+            background-color: rgba(240, 208, 96, 0.08);
+        }
+        header.site-header .practice-info { text-align: right; }
+        header.site-header .practice-name {
+            color: var(--white);
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        header.site-header .practice-sub {
+            color: var(--steel);
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        /* ---------- Guide shell ---------- */
+        main.guide-shell {
+            max-width: 820px;
+            margin: 40px auto;
+            padding: 0 24px;
+            color: var(--white);
+            line-height: 1.65;
+        }
+        main.guide-shell .eyebrow {
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        main.guide-shell h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            letter-spacing: 0.3px;
+            line-height: 1.25;
+        }
+        main.guide-shell .lede {
+            color: var(--steel);
+            font-size: 16px;
+            margin-bottom: 36px;
+        }
+        main.guide-shell section { margin-bottom: 34px; }
+        main.guide-shell h2 {
+            color: var(--white);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 8px;
+            letter-spacing: 0.2px;
+        }
+        main.guide-shell h3 {
+            color: var(--gold);
+            font-size: 13.5px;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-top: 22px;
+            margin-bottom: 10px;
+        }
+        main.guide-shell p { margin-bottom: 14px; color: var(--white); }
+        main.guide-shell ul, main.guide-shell ol {
+            margin: 12px 0 18px 26px;
+            color: var(--white);
+        }
+        main.guide-shell li { margin-bottom: 8px; }
+        main.guide-shell strong { color: var(--gold); font-weight: 600; }
+        main.guide-shell em { color: var(--steel); font-style: italic; }
+        main.guide-shell code {
+            background-color: rgba(176, 196, 222, 0.12);
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+            font-size: 13px;
+            color: var(--gold);
+        }
+        main.guide-shell table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+        main.guide-shell th, main.guide-shell td {
+            border: 1px solid var(--card-border);
+            padding: 9px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        main.guide-shell th {
+            background-color: rgba(176, 196, 222, 0.08);
+            color: var(--gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-size: 11px;
+        }
+        main.guide-shell td { color: var(--white); }
+        main.guide-shell .callout {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-left: 3px solid var(--gold);
+            border-radius: 4px;
+            padding: 14px 18px;
+            margin: 18px 0;
+            color: var(--steel);
+            font-size: 14px;
+        }
+        main.guide-shell .callout strong { color: var(--gold); }
+        main.guide-shell hr {
+            border: 0;
+            border-top: 1px solid var(--card-border);
+            margin: 28px 0;
+        }
+        main.guide-shell .store-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+            margin: 20px 0 24px 0;
+        }
+        main.guide-shell .store-badges a {
+            display: inline-block;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            line-height: 0;  /* prevent baseline space below the img */
+        }
+        main.guide-shell .store-badges a:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+        }
+        main.guide-shell .store-badges img {
+            display: block;
+            height: 56px;
+            width: auto;
+        }
+        @media (max-width: 480px) {
+            main.guide-shell .store-badges img { height: 48px; }
+        }
+        main.guide-shell .back-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid rgba(240, 208, 96, 0.4);
+            padding: 8px 14px;
+            border-radius: 4px;
+        }
+        main.guide-shell .back-link:hover {
+            border-color: var(--gold);
+            background-color: rgba(240, 208, 96, 0.08);
+        }
+        /* In-content external links (e.g. the support page) — gold to stay
+           readable on the navy background; underlined to signal clickability. */
+        main.guide-shell a.ext-link {
+            color: var(--gold);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        main.guide-shell a.ext-link:hover { color: var(--white); }
+
+        footer.site-footer {
+            background-color: var(--navy-deep);
+            color: var(--steel);
+            font-size: 11.5px;
+            letter-spacing: 1.5px;
+            text-transform: lowercase;
+            text-align: center;
+            padding: 18px 16px;
+            border-top: 1px solid var(--card-border);
+        }
+        footer.site-footer a { color: var(--steel); text-decoration: none; }
+        footer.site-footer a:hover { color: var(--white); }
+
+        /* ---------- Mobile ---------- */
+        @media (max-width: 720px) {
+            header.site-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 14px 18px;
+            }
+            header.site-header .practice-info { text-align: left; }
+            header.site-header .practice-name { font-size: 18px; }
+            header.site-header .practice-sub  { font-size: 12px; }
+
+            main.guide-shell {
+                margin: 24px auto;
+                padding: 0 18px;
+            }
+            main.guide-shell h1 { font-size: 23px; }
+            main.guide-shell h2 { font-size: 18px; }
+            main.guide-shell .lede { font-size: 15px; }
+            main.guide-shell table { font-size: 13px; }
+            main.guide-shell th, main.guide-shell td { padding: 7px 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="index.html">&larr; Back to portal</a>
+        </nav>
+        <div class="practice-info">
+            <div class="practice-name">{{PRACTICE_NAME}}</div>
+        </div>
+    </header>
+
+    <main class="guide-shell">
+
+        <div class="eyebrow">User Guide</div>
+        <h1>Benedict &mdash; User Guide &amp; Best Practices</h1>
+        <p class="lede">
+            Benedict is your voice (and or text based) compliance assistant. He listens (you can type, too),
+            fills in your forms, shows them on screen, and emails the finished paperwork
+            when you&rsquo;re done. He&rsquo;s quick, and a few simple habits will keep
+            every session accurate, fast, and as inexpensive as possible.
+        </p>
+
+        <div class="callout" style="border-left-color:#b3261e">
+            <strong>Please check each form before you submit it.</strong>
+            Benedict is an AI assistant, and AI can make mistakes. He can mishear a word,
+            record an answer against the wrong question, or note something you did not
+            intend. <strong>Every form is your practice&rsquo;s compliance record, and a
+            person needs to review it before it is submitted.</strong> Ask Benedict to show
+            the form on screen, read it through, and correct anything that is not right.
+            If a form has already gone, it can still be put right &mdash; see
+            <em>Reviewing or correcting after submission</em> below.
+        </div>
+
+        <!-- ============================================================
+             USAGE GUIDE — how to use Benedict to complete forms
+             ============================================================ -->
+
+        <section>
+            <h2>Getting started</h2>
+            <p>
+                Open your practice&rsquo;s Benedict page in your browser. (The URL was
+                created for you and emailed to you from &ldquo;no_reply@teckel.io&rdquo;
+                when you first created your practice&rsquo;s Benedict in the teckel
+                App.) You&rsquo;ll see two things side by side:
+            </p>
+            <ul>
+                <li><strong>On the left:</strong> the Benedict voice widget &mdash; your way to talk to him.</li>
+                <li><strong>On the right:</strong> the form viewer (currently empty). Your session cost appears at the top once the session ends.</li>
+            </ul>
+            <p>
+                To start, click the Benedict widget once and allow microphone access if
+                your browser asks. Then just speak &mdash; there&rsquo;s no special wake
+                word. Try <em>&ldquo;hi Benedict&rdquo;</em>, <em>&ldquo;I want to fill in a form&rdquo;</em>,
+                or <em>&ldquo;open the Crown consent.&rdquo;</em>
+            </p>
+            <h3>Your access code</h3>
+            <p>
+                Benedict will first ask for your <strong>six-digit access code</strong>.
+                Open the teckel App on your phone, navigate to your Account with your
+                teckel credit (tc) balance, tap &ldquo;Generate Access Code&rdquo;
+                (a popup will appear at the bottom of your phone screen with your
+                temporary six digit PIN), and read it out loud to Benedict (or type
+                it). A code stays valid for about <strong>15 minutes</strong> from the
+                moment you generate it &mdash; and within that window the <em>same</em>
+                code simply works again, so if a call drops you can reconnect and say
+                the code you already have. After the window closes, generate a fresh
+                one. That short lifetime is what keeps your practice&rsquo;s records
+                locked to your team. Better still, if you come back <em>in the same
+                browser tab</em> you usually won&rsquo;t be asked for a code at all
+                &mdash; see <em>Codes, timeouts and coming back</em> below.
+            </p>
+            <h3>Prefer to type?</h3>
+            <p>
+                The widget accepts <strong>typed messages during a voice call</strong> as
+                well as speech. Everything in this guide works either way &mdash; typing
+                is especially handy for email addresses, serial numbers and access codes.
+            </p>
+        </section>
+
+        <section>
+            <h2>A typical session, end to end</h2>
+            <ol>
+                <li><strong>Greet Benedict.</strong> <em>&ldquo;Hi Benedict&rdquo;</em> or <em>&ldquo;I want to work on a form.&rdquo;</em> He&rsquo;ll respond and ask what you&rsquo;d like to do.</li>
+                <li><strong>Find your form.</strong> Either say a phrase from the form&rsquo;s title (<em>&ldquo;Crown consent&rdquo;</em>, <em>&ldquo;cleaning specification&rdquo;</em>, <em>&ldquo;patient survey&rdquo;</em>) and Benedict will search the catalogue, OR ask <em>&ldquo;what am I working on?&rdquo;</em> / <em>&ldquo;what forms are available?&rdquo;</em> to hear the lists.</li>
+                <li><strong>Or find it on screen, without saying a word.</strong> Once a form
+                    is open, a <strong>search box</strong> appears just above the viewer. Type a
+                    few letters of any form&rsquo;s name &mdash; the words can be in any order, so
+                    <em>&ldquo;recep check&rdquo;</em> finds <em>&ldquo;Reception Security
+                    Checklist&rdquo;</em> &mdash; and matching forms are listed with their status
+                    and the date they were last touched. <strong>Click one to copy its name</strong>,
+                    then say it to Benedict to open it. Browsing out loud is the slowest way to
+                    find a form; reading the list and saying the name once is the fastest.
+                    <em>(The list is for finding a name &mdash; clicking it does not open the form,
+                    because only Benedict can open your paperwork.)</em></li>
+                <li><strong>Start filling.</strong> Once Benedict has the form, he&rsquo;ll walk through it question-by-question &mdash; OR you can volunteer many answers in one breath. Volunteering is recommended; it&rsquo;s faster and cheaper.</li>
+                <li><strong>See it on screen whenever you like.</strong> Ask <em>&ldquo;show me the form&rdquo;</em> to open the viewer on the right. It shows the form as it stands &mdash; including your in-progress entry &mdash; and it updates itself whenever something changes, so new answers appear on their own shortly after you say them. There&rsquo;s a small <strong>Refresh</strong> button in the corner of the viewer if you ever want to be certain you&rsquo;re looking at the latest version.</li>
+                <li><strong>Make corrections any time.</strong> Tell Benedict <em>&ldquo;change question 7 to no&rdquo;</em> or <em>&ldquo;the answer to age is 34.&rdquo;</em> He&rsquo;ll overwrite the previous value.</li>
+                <li><strong>Skip PII when you&rsquo;d rather not share it.</strong> If a question asks for a personal detail (patient name, date of birth, contact info) and you&rsquo;d prefer to leave it blank, say <em>&ldquo;skip.&rdquo;</em> Benedict will leave that field blank and continue. The form will still submit.</li>
+                <li><strong>Read it through, then submit.</strong> When all required fields are filled, Benedict will offer to submit. Before you say yes, ask him to show the form on screen and check it reads the way you meant &mdash; this is the last point at which a mistake is easy to fix. Say <em>&ldquo;yes please&rdquo;</em> or <em>&ldquo;submit&rdquo;</em> and he&rsquo;ll email the finished paperwork (a PDF plus the original document format) to your practice&rsquo;s registered address. He always double-checks with you before sending anything to a different address.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Speaking to Benedict &mdash; what works</h2>
+            <ul>
+                <li><strong>Be natural.</strong> Whole sentences, fragments, <em>&ldquo;yeah&rdquo;</em> / <em>&ldquo;yep&rdquo;</em> / <em>&ldquo;no thanks&rdquo;</em> &mdash; all fine. He&rsquo;s not a command line.</li>
+                <li><strong>Batch your answers.</strong> <em>&ldquo;Yes to 1, 2 and 4; no to 3; the rest are all acknowledged.&rdquo;</em> &rarr; one save, less waiting. This is the biggest single thing you can do to speed up a session.</li>
+                <li><strong>Use a question number OR a content cue.</strong> <em>&ldquo;Set question 12 to acknowledged&rdquo;</em> and <em>&ldquo;the one about anaesthetic should be local&rdquo;</em> both work. Use whichever feels more natural.</li>
+                <li><strong>Type the fiddly bits.</strong> Email addresses, serial numbers, precise readings &mdash; typing them avoids mis-hearing and re-spelling, which usually saves more time than it takes. If you&rsquo;re on a call the clock keeps running while you type, so type the things that would otherwise need repeating, and say the rest.</li>
+                <li><strong>Ask for a review any time.</strong> <em>&ldquo;Review my entries&rdquo;</em> &rarr; he&rsquo;ll read back everything you&rsquo;ve filled so far.</li>
+                <li><strong>Take the time you need &mdash; but end the call for a real break.</strong> A short pause to check something is fine. If you&rsquo;re going to be more than a moment, say <em>&ldquo;save it, I&rsquo;ll come back&rdquo;</em> and end the call rather than leaving the line open: while a call is open you are paying for the time, whether or not anyone is speaking. Resuming later is seamless. By text there is no clock at all &mdash; pause as long as you like.</li>
+                <li><strong>Don&rsquo;t whisper.</strong> Speak clearly at normal volume; Benedict transcribes a clear signal better than a quiet one.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Saving, finishing and submitting &mdash; three different things</h2>
+            <p>
+                This is the one distinction worth reading twice, because two of the three
+                look finished and only one of them files anything.
+            </p>
+            <p>
+                <strong>You never have to save.</strong> Every answer is written down the
+                moment you give it. There is no save button and nothing to remember to do
+                &mdash; if the line drops, or you say goodbye halfway through, everything
+                you answered is still there when you come back.
+            </p>
+            <p>So a form is always in one of three states:</p>
+            <ul>
+                <li><strong>In progress</strong> &mdash; you have answered some of the
+                    questions. It is a draft: private to your practice, yours to change,
+                    and yours to remove.</li>
+                <li><strong>Complete</strong> &mdash; every question that needs an answer
+                    has one. Benedict marks this <em>automatically</em> the moment the last answer
+                    lands; you are not asked, and you do not agree to it.
+                    <strong>Complete does not mean filed.</strong> Nothing has been
+                    recorded, nothing has been sent, and it is still a draft in every way
+                    that matters. A form can sit here indefinitely looking finished while
+                    having achieved nothing.</li>
+                <li><strong>Submitted</strong> &mdash; you said so, out loud. This is the
+                    only step that files anything, and the only one that creates a
+                    compliance record.</li>
+            </ul>
+            <p>
+                If you are ever unsure which of the three you are looking at, ask
+                &mdash; it is a sensible question, not a silly one:
+            </p>
+            <div class="callout">
+                <em>&ldquo;Is the sharps audit actually submitted, or just finished?&rdquo;</em>
+            </div>
+            <h3>What submitting actually does</h3>
+            <p>
+                When you say <em>&ldquo;submit it&rdquo;</em>, Benedict builds the finished
+                paperwork, emails it to your practice&rsquo;s registered address with the
+                original-format document attached, and <em>only then</em> marks the form
+                submitted. If the email cannot be sent, the form is <strong>not</strong>
+                marked as submitted &mdash; Benedict tells you, and it stays a draft. You
+                will not be left believing something was filed when it was not.
+            </p>
+            <p>
+                A protected, tamper-evident copy is written to your practice&rsquo;s
+                permanent record at the same point, so what you submitted can be shown
+                later exactly as it stood on the day &mdash; see
+                <em>Reviewing or correcting after submission</em> below for how that record
+                is protected, and for the one archiving habit we recommend.
+            </p>
+            <h3>Which way each state moves</h3>
+            <ul>
+                <li><strong>Before you submit</strong>, everything is reversible. You can
+                    change any answer, attach or detach a document, or remove the draft
+                    entirely.</li>
+                <li><strong>After you submit</strong>, the form cannot be removed &mdash;
+                    not by you, and not by Benedict. It is your compliance record. You can
+                    still <em>correct</em> it: Benedict opens a fresh copy with your change
+                    applied, and the original stays in the audit trail rather than being
+                    overwritten. That is what makes the record worth having.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Resuming a form you didn&rsquo;t finish</h2>
+            <p>
+                If you started a form earlier and didn&rsquo;t finish, say
+                <em>&ldquo;resume the Crown consent&rdquo;</em> or
+                <em>&ldquo;show my in-progress forms.&rdquo;</em>
+                Benedict will pick up where you left off &mdash; your previous answers
+                are preserved. You don&rsquo;t need to restate anything you&rsquo;ve
+                already answered.
+            </p>
+            <h3>Getting rid of a draft you don&rsquo;t want</h3>
+            <p>
+                Started a form by mistake, or ended up with two copies of the same one?
+                Say <em>&ldquo;get rid of this form&rdquo;</em>, or name the one you mean.
+            </p>
+            <ul>
+                <li><strong>Drafts only.</strong> A form you have already submitted can
+                    never be removed &mdash; it is your practice&rsquo;s compliance record
+                    and it stays on file. Benedict says so plainly, and offers you a fresh
+                    copy to work on instead.</li>
+                <li><strong>You hear what you are about to lose, first.</strong> If the
+                    draft holds anything at all, Benedict names it &mdash;
+                    <em>&ldquo;that has six answers and one attached document on it;
+                    removing it takes that away &mdash; shall I go ahead?&rdquo;</em>
+                    &mdash; and waits for a clear yes. An empty draft goes on your word
+                    alone.</li>
+                <li><strong>A form that is complete but not yet submitted is still a
+                    draft</strong>, and still yours to remove. Nothing is filed until you
+                    submit it.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Knowing where you stand</h2>
+            <p>Benedict can answer four different &ldquo;where am I?&rdquo; questions &mdash; use the one you mean:</p>
+            <ul>
+                <li><em>&ldquo;What am I working on?&rdquo;</em> / <em>&ldquo;what&rsquo;s outstanding?&rdquo;</em> &mdash; the forms you&rsquo;ve started or not yet submitted.</li>
+                <li><em>&ldquo;What haven&rsquo;t I started yet?&rdquo;</em> &mdash; blank forms from your catalogue, grouped by type (audits, logs, risk assessments, policies&hellip;).</li>
+                <li><em>&ldquo;What forms are available?&rdquo;</em> &mdash; the whole catalogue, grouped, with where each form stands.</li>
+                <li><em>&ldquo;What&rsquo;s due within a month?&rdquo;</em> &mdash; the due window (a week, a fortnight, a year &mdash; your choice). If some of your documents have no schedule set yet, he says how many and offers to list them, rather than quietly leaving them out &mdash; and you can now set a schedule yourself in seconds; see <em>Dates, due dates and review schedules</em> just below.</li>
+            </ul>
+            <p>
+                Lists come back grouped and counted, ten names at a time &mdash; say
+                <em>&ldquo;next&rdquo;</em> for the following page. For a bird&rsquo;s-eye
+                view on paper, say <em>&ldquo;email me a status report&rdquo;</em>:
+                a PDF grouped by category goes to your practice&rsquo;s registered
+                address.
+            </p>
+            <h3>Your whole catalogue on screen</h3>
+            <p>
+                Hearing a long list read out is slow. Say <em>&ldquo;show me my document
+                directory&rdquo;</em> and your entire catalogue opens in the viewer on the
+                right, <strong>grouped by category</strong> &mdash; staff and HR, health
+                and safety, infection control and the rest &mdash; each form listed with
+                how often it is due and a <strong>traffic-light tag</strong> showing where
+                it stands. It is the quickest way to get your bearings, and to
+                read off the exact name of something you want to open.
+            </p>
+            <h3>The traffic lights &mdash; what each colour is actually claiming</h3>
+            <p>
+                Every form on that screen carries a small coloured tag &mdash; the
+                <strong>traffic lights</strong>. The colours are
+                deliberately blunt: each one makes a different claim, and one of them
+                makes no claim at all. <strong>Every tag also carries its meaning in
+                words</strong>, so you never have to rely on telling one colour from
+                another.
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tag</th>
+                        <th>What it says</th>
+                        <th>What it is claiming</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Red</strong></td>
+                        <td>Overdue by <em>n</em> days</td>
+                        <td>You have missed a date we can prove &mdash; the form has a
+                            schedule, you have submitted it before, and the next one is
+                            late. Red is rare, and that is the point of it.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pink</strong></td>
+                        <td>Due today, or due in <em>n</em> days</td>
+                        <td>Due within the week.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Amber</strong></td>
+                        <td>Due in <em>n</em> days</td>
+                        <td>Due within the month.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Green</strong></td>
+                        <td>Due in <em>n</em> days</td>
+                        <td>In date, with more than a month to run.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Yellow</strong></td>
+                        <td>Never submitted</td>
+                        <td>The form has a schedule and has never been submitted once.
+                            Note that this is <em>not</em> the same as late: with nothing
+                            submitted there is no date you could have missed. It means
+                            &ldquo;this has never been done&rdquo;, which for a practice
+                            starting out is the most useful thing the screen can say.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Grey</strong></td>
+                        <td>No schedule set, or As needed</td>
+                        <td>We cannot say. Either no review schedule has been recorded for
+                            this form yet, or it is one that is only filled in when
+                            something happens (an incident report), so it has no due date
+                            and never will.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="callout">
+                <strong>Grey is not green.</strong> A grey tag does not mean the form is
+                fine &mdash; it means nobody has told us when it is due, so no judgement
+                about it is possible. Grey is the common case to begin with, and it doubles
+                as your to-do list: each grey form is one you can put a schedule against in
+                seconds. See <em>Tell Benedict your review schedule</em> below. As you set
+                schedules, grey turns into a real colour and the screen starts telling you
+                something.
+            </div>
+            <p>
+                There is no shading in between the colours. A form is in one band or
+                another, never partly. That is deliberate: a review schedule is a coarse
+                thing (&ldquo;annual&rdquo;, &ldquo;monthly&rdquo;), so a sliding scale
+                would imply we know your position more precisely than we honestly do.
+            </p>
+        </section>
+
+        <section>
+            <h2>Dates, due dates and review schedules</h2>
+            <p>
+                Benedict keeps a full date history for every document, and you can ask
+                for the whole picture in one question:
+            </p>
+            <div class="callout">
+                <em>&ldquo;When did I last submit the sharps audit, and when&rsquo;s the next one due?&rdquo;</em>
+            </div>
+            <p>
+                The answer comes back in one breath: when you last submitted it (and how
+                many times you&rsquo;ve submitted it overall), any unsubmitted draft and
+                when you last worked on it, how often it&rsquo;s due, and the date the
+                next one is due by &mdash; with a <em>&ldquo;shall we do it
+                now?&rdquo;</em> if it&rsquo;s overdue. Every date in the answer is
+                looked up and computed from your practice&rsquo;s own records &mdash;
+                Benedict reads out exactly what the record says, never an estimate.
+            </p>
+            <h3>Looking back over a period</h3>
+            <p>
+                You can also search your activity by date:
+                <em>&ldquo;what did I submit last month?&rdquo;</em> &middot;
+                <em>&ldquo;what have I worked on in the last week?&rdquo;</em> &middot;
+                <em>&ldquo;what went out this quarter?&rdquo;</em>
+                Natural periods all work &mdash; the last week, the last month, this
+                month, last month, this quarter, this year &mdash; or give exact dates
+                (<em>&ldquo;between the 1st and the 14th of June&rdquo;</em>).
+            </p>
+            <h3>Tell Benedict your review schedule</h3>
+            <p>
+                Some documents in the catalogue don&rsquo;t yet have a review period on
+                record. When that&rsquo;s the case, Benedict says so and invites you to
+                supply it &mdash; you know your practice&rsquo;s obligations best:
+            </p>
+            <div class="callout">
+                <em>&ldquo;This one&rsquo;s due every two months &mdash; CQC requires it.&rdquo;</em>
+            </div>
+            <p>
+                Benedict reads back exactly what he&rsquo;s about to record and asks
+                before saving &mdash; nothing is written until you agree. From then on
+                the schedule counts from each submission, takes effect immediately, and
+                your <em>&ldquo;what&rsquo;s due?&rdquo;</em> answers and status reports
+                follow it. Any sensible period works &mdash; daily, weekly, fortnightly,
+                monthly, quarterly, yearly, <em>&ldquo;every two months&rdquo;</em>, and
+                so on &mdash; and you can equally record that a document has no fixed
+                cycle or is completed only as events require. You can also record
+                whether a document is <strong>mandatory or recommended</strong>.
+            </p>
+            <ul>
+                <li><strong>Your setting is your practice&rsquo;s alone.</strong> The
+                    shared catalogue&rsquo;s default isn&rsquo;t changed by it &mdash;
+                    but your contribution is passed along as a suggestion for review,
+                    so the catalogue improves as practices like yours fill the gaps.</li>
+                <li><strong>Setting a longer period than the recorded default?</strong>
+                    Your setting still takes effect for your practice&rsquo;s reminders,
+                    but Benedict will point out that the recorded default stays and
+                    your regulator may still expect the recorded cycle.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Surveys &mdash; let patients fill them in themselves</h2>
+            <p>
+                For the Patient Satisfaction Survey (and any survey-style form), the
+                easiest and cheapest route is the <strong>web link</strong>, and there
+                are two ways to get it. Say <em>&ldquo;open the survey link&rdquo;</em>
+                and Benedict opens the fill-in page in a <strong>new browser tab</strong>,
+                ready to go through with a patient in front of you &mdash; whatever you
+                already have on screen stays exactly where it is. Or say
+                <em>&ldquo;email me the survey link&rdquo;</em> and he sends it to your
+                practice&rsquo;s registered address, to forward to patients, text, or
+                open on a tablet at reception.
+            </p>
+            <p>
+                <strong>Ask once and use it all week.</strong> The same link stays valid
+                for seven days and can be filled in again and again &mdash; you do not
+                need a new one per patient. Each web submission lands as
+                <strong>one respondent</strong> in the same survey log &mdash; no voice
+                time, works on any phone or computer, and is by far the cheapest way to
+                collect responses.
+            </p>
+            <p>
+                You can also take responses <strong>by voice</strong>: Benedict asks for
+                one respondent&rsquo;s answers at a time (name first, or
+                <em>&ldquo;anonymous&rdquo;</em>). Say <em>&ldquo;new respondent&rdquo;</em>
+                to start the next one &mdash; each respondent becomes one row. Web and
+                voice responses can be mixed freely in the same survey; submit the log
+                whenever you&rsquo;re ready.
+            </p>
+        </section>
+
+        <section>
+            <h2>Daily logs, autoclave records and cleaning schedules</h2>
+            <p>
+                For a daily record like an autoclave log, Benedict walks the day&rsquo;s
+                fields in order &mdash; and <strong>you can give the whole entry in one
+                breath</strong>:
+            </p>
+            <div class="callout">
+                <em>&ldquo;Cycle one, yes, no, yellow, one three four, and the rest are all yes.&rdquo;</em>
+            </div>
+            <p>
+                Benedict maps your values onto the remaining fields in order and reads
+                back exactly what he recorded. <em>&ldquo;The next three are yes&rdquo;</em>
+                fills exactly three; <em>&ldquo;the rest are all yes&rdquo;</em> fills
+                everything left that can safely take a yes &mdash; he&rsquo;ll skip
+                dates, initials and number readings and tell you which ones still need
+                a real answer.
+            </p>
+            <p>
+                You don&rsquo;t have to go in order, either &mdash; <strong>name the
+                fields and Benedict puts each value where it belongs</strong>:
+            </p>
+            <div class="callout">
+                <em>&ldquo;Maximum Temperature is one three four, Sterilisation Time three
+                minutes, and the Pressure Reading is two point two.&rdquo;</em>
+            </div>
+            <p>
+                Both styles mix naturally with whatever he just asked: answer his question
+                and carry straight on &mdash; <em>&ldquo;Non-Vacuum. Then Maximum
+                Temperature is one three four&hellip;&rdquo;</em> &mdash; and nothing
+                after your first answer is lost. If a name could mean two fields
+                (&ldquo;temperature&rdquo; on a log with a minimum and a maximum),
+                Benedict asks which you meant rather than guessing.
+            </p>
+            <ul>
+                <li><strong>Fix a field in today&rsquo;s entry:</strong> <em>&ldquo;change the minimum temperature to three&rdquo;</em> &mdash; or <em>&ldquo;clear the last two&rdquo;</em> to erase values from the draft.</li>
+                <li><strong>Fix a field in an entry you&rsquo;ve already saved:</strong> <em>&ldquo;in yesterday&rsquo;s entry, change day sheets to no&rdquo;</em> &mdash; Benedict corrects that one field and reads back what changed.</li>
+                <li><strong>Review any time:</strong> <em>&ldquo;read back today&rsquo;s entry&rdquo;</em> mid-fill, and <em>&ldquo;show me the form&rdquo;</em> puts it on screen &mdash; today&rsquo;s unsaved entry appears on the row marked <strong>IN PROGRESS</strong>.</li>
+                <li><strong>Save before you submit:</strong> say <em>&ldquo;save the entry&rdquo;</em> when the day is done &mdash; Benedict reads the committed row back from the record. If you ask to submit while today&rsquo;s entry is still unsaved, he&rsquo;ll check with you first &mdash; a half-done entry is never silently dropped.</li>
+                <li><strong>Machine details are remembered.</strong> Your autoclave&rsquo;s type, serial number and location are asked once and carried forward every day &mdash; and questions that don&rsquo;t apply to your equipment are skipped automatically.</li>
+            </ul>
+            <p>
+                Task-grid schedules (like the FR2 Surgery Cleaning Specification) work
+                task by task &mdash; <em>&ldquo;Sinks and taps, done, today, initials
+                SDA&rdquo;</em> &mdash; with the same shortcut: <em>&ldquo;today I did
+                all of them&rdquo;</em> and Benedict confirms the list, then commits
+                each one.
+            </p>
+            <p>
+                <strong>Long log, short day?</strong> Ask for <em>&ldquo;the log&rsquo;s
+                web link&rdquo;</em> &mdash; you&rsquo;ll get a fill-in page just like
+                the survey one. Each web submission adds one dated entry to the log,
+                with no voice time at all.
+            </p>
+        </section>
+
+        <section>
+            <h2>Your practice documents &mdash; certificates, photos and scans</h2>
+            <p>
+                Alongside your forms, Benedict keeps a library of your practice&rsquo;s own
+                documents: inspection certificates, service records, signed sheets,
+                photographs of equipment. You can add to it, give things names you&rsquo;ll
+                recognise, use a document as the answer to a question, and take anything
+                back out again.
+            </p>
+
+            <h3>Adding documents</h3>
+            <p>
+                While you&rsquo;re working on a form, say for example
+                <em>&ldquo;I&rsquo;d like to attach the fire safety certificate&rdquo;</em>
+                &mdash; a secure upload page opens right here in the form panel, and the
+                same link is emailed to your practice address so you can open it on
+                whichever device actually has the file. That matters more than it sounds:
+                the photograph is usually on your phone, not on the computer in front of
+                you.
+            </p>
+            <p>
+                <strong>You can send several at once.</strong> Pick as many files as you
+                like &mdash; they line up in a list and upload one after another, each
+                showing its own progress, so you can watch the batch go through. Three
+                things worth knowing:
+            </p>
+            <ul>
+                <li><strong>Up to 15&nbsp;MB per file</strong>, and the accepted types are
+                    PDF, JPG, PNG, DOC, DOCX and TXT.</li>
+                <li><strong>Anything that can&rsquo;t be accepted is named, with the
+                    reason</strong> &mdash; the wrong sort of file, or one that&rsquo;s too
+                    large &mdash; rather than quietly disappearing. The rest of the batch
+                    still goes through.</li>
+                <li><strong>A file that fails can be retried on its own</strong>, without
+                    choosing the whole set again.</li>
+            </ul>
+            <p>
+                Even a scan whose text can&rsquo;t be read attaches perfectly safely
+                &mdash; it is stored as the picture it is.
+            </p>
+
+            <h3>Give it a name you&rsquo;ll recognise</h3>
+            <p>
+                A phone camera names its photographs things like
+                <em>20260821_102231.jpg</em>, and four of those in a row are impossible to
+                tell apart. Just say <em>&ldquo;rename that to Staff Signature Sheet
+                2026&rdquo;</em> and the document carries that name everywhere afterwards
+                &mdash; in your lists, on your forms, and in your archive. The original
+                filename is kept underneath and is never overwritten, because it is part of
+                the audit trail: renaming adds a label, it doesn&rsquo;t erase what you
+                uploaded.
+            </p>
+
+            <h3>Use a document as the answer to a question</h3>
+            <p>
+                Some questions are answered better by a document than by a sentence
+                &mdash; &ldquo;all staff have signed this year&rsquo;s declaration&rdquo;
+                is a signature sheet, not a yes. Say <em>&ldquo;use the staff signature
+                sheet to answer question 12&rdquo;</em> and that question records a
+                reference to the document.
+            </p>
+            <ul>
+                <li><strong>One document can answer many questions.</strong> If the same
+                    sheet covers a whole column of signature cells, it can answer all of
+                    them &mdash; stored once, and referenced as many times as you need.</li>
+                <li><strong>A referenced answer counts as complete</strong>, so the form
+                    finishes and submits in the ordinary way.</li>
+                <li><strong>It reads as a reference, not as something you typed</strong>
+                    &mdash; on your record and on the finished PDF it plainly names the
+                    document it points to.</li>
+            </ul>
+
+            <h3>Taking a document off a form &mdash; or out of your records</h3>
+            <p>
+                These are two different things, and Benedict keeps them carefully apart:
+            </p>
+            <ul>
+                <li><em>&ldquo;Take the signature sheet off question 12&rdquo;</em>
+                    removes <strong>the link only</strong>. The document stays in your
+                    library, and stays on any other question it answers. If a question
+                    holds several documents the others remain; if it was the last one, the
+                    answer is cleared rather than left pointing at nothing.</li>
+                <li><em>&ldquo;Remove that document from my records&rdquo;</em> takes
+                    <strong>the document itself</strong> out of your library.</li>
+            </ul>
+            <p>
+                Taking a document <strong>off a form</strong> is something you can do
+                freely while that form is still a draft, but not once it has been
+                submitted &mdash; the submitted record asserted that the document
+                supported that answer, so it stays put. One honest note on the wording: a
+                document removed from your records is <em>removed from your records</em>.
+                The encrypted copy already written to permanent storage cannot be recalled
+                by anybody, so Benedict will never tell you it has been destroyed.
+            </p>
+
+            <h3>Seeing what you have</h3>
+            <p>
+                Ask <em>&ldquo;what documents have I uploaded?&rdquo;</em> and Benedict
+                lists them, naming the form each one is attached to and distinguishing
+                those held for the practice generally from those sitting against a
+                particular form. Say <em>&ldquo;show me that&rdquo;</em> and the document
+                opens in the viewer on the right, where it stays while you read it.
+            </p>
+        </section>
+
+        <section>
+            <h2>Reviewing or correcting after submission</h2>
+            <p>
+                Submitted a form and noticed a typo? Just tell Benedict:
+                <em>&ldquo;Open the last Crown consent and change question 27.&rdquo;</em>
+                He&rsquo;ll open a fresh editable copy with that change applied.
+                <strong>You can make more changes</strong> &mdash; ask for as many as
+                you need before saying <em>&ldquo;submit.&rdquo;</em> The original
+                submission stays in the audit trail; the new copy supersedes it.
+            </p>
+            <p>
+                Every submission is also preserved as a permanent, tamper-evident record
+                on IPFS (distributed storage) &mdash; you can view your submission audit
+                record any time in the <strong>teckel App</strong>.
+            </p>
+            <h3>How that permanent record is protected &mdash; and one habit we strongly recommend</h3>
+            <ul>
+                <li><strong>The record is encrypted.</strong> What sits on the
+                    distributed network is unreadable ciphertext. It can only be read
+                    back <em>through teckel</em>, and only for the practice wallet that
+                    created it &mdash; nobody else, even someone who found the record,
+                    can read a word of it.</li>
+                <li><strong>Your records belong to your practice wallet.</strong> Your
+                    teckel account details, including your apikey, can change freely
+                    without affecting anything you have stored. The wallet is what
+                    matters. In the teckel App, the <strong>export</strong> function
+                    displays your wallet as a QR code, and the <strong>import</strong>
+                    function on another device scans that code back in to restore the
+                    same wallet.</li>
+                <li><strong>Never put that code in a cloud.</strong> Do not screenshot
+                    it, photograph it, email it to yourself, or save it to Google Drive,
+                    iCloud, Dropbox or any other online storage. A screenshot on a phone
+                    is usually uploaded to a photo cloud automatically, which is exactly
+                    what must not happen. Anyone who holds that code holds your records
+                    &mdash; treat it like the key to the building, and keep it inside the
+                    practice.</li>
+            </ul>
+            <h3>Moving to a new phone</h3>
+            <p>
+                This is the safe case: your old phone is still working, so it can show the
+                code for the new one to scan.
+            </p>
+            <ol>
+                <li>The App creates a brand-new account for you automatically. On the
+                    <strong>Accounts</strong> screen it shows as <strong>Account 1</strong>,
+                    marked <strong>CREATED (not imported)</strong>, and it is empty &mdash;
+                    none of your history is in it. This is expected; don&rsquo;t start work
+                    in it.</li>
+                <li>On your <em>old</em> device, open <strong>Accounts</strong> and find
+                    the account you have been using. Tap <strong>Export</strong> at the
+                    bottom of that account&rsquo;s card. A <em>Private Key</em> box opens
+                    showing a warning and <strong>no code yet</strong> &mdash; this is
+                    normal, nothing has gone wrong. Tap <strong>Click to reveal&hellip;</strong>
+                    to display the QR code. The warning is accurate: anyone who sees that
+                    code can take full control of the account, so do this somewhere
+                    private, with only the phone that is going to scan it in view. Close
+                    the box as soon as the other phone has scanned it.</li>
+                <li>On the <em>new</em> device, open <strong>Accounts</strong>, tap
+                    <strong>Import</strong>, scan the code, and press
+                    <strong>Finish</strong>.</li>
+                <li>Your practice account now appears on the Accounts screen marked
+                    <strong>IMPORTED (not created)</strong>. <strong>Select that one and
+                    work in it</strong> &mdash; it holds your records. The top of the
+                    screen shows which account is currently selected, so check it says the
+                    right one before you start.</li>
+                <li><strong>Name it straight away.</strong> Tap <strong>Nickname</strong>
+                    on that account&rsquo;s card and give it a name you will recognise
+                    &mdash; your practice name is the obvious one. Do this now, while you
+                    still know which account is which. Don&rsquo;t rely on the number:
+                    it depends on how many accounts you have. And don&rsquo;t rely on the
+                    <em>IMPORTED</em> label on its own either &mdash; you can import as
+                    many accounts as you like, so more than one can carry it. The nickname
+                    is the only label that stays meaningful to you.</li>
+            </ol>
+            <h3 id="app-safety">&#9888; Reinstalling the App on the same phone &mdash; read this first</h3>
+            <p>
+                <strong>Update the App; do not uninstall and reinstall it.</strong> Use the
+                update offered by Google Play or the App Store. A reinstall is not the same
+                thing, and it is the one action that can lose your records.
+            </p>
+            <p>
+                Here is why it is different from getting a new phone. The steps above work
+                because your old phone is still there to display the code. A reinstall on the
+                <em>same</em> phone removes the App and everything in it &mdash; so there is
+                no code left to scan, and nothing to import from. The fresh App simply creates
+                an empty account, and from the phone alone the records created under the old
+                one cannot be reached. This has already happened to a practice: the App was
+                reinstalled rather than updated.
+            </p>
+            <p>
+                <strong>If it has already happened, tell us &mdash; do not assume your
+                records are gone.</strong> We can usually identify the account you were
+                using before, and move your practice&rsquo;s forms, documents and history
+                across to the new one. Contact
+                <a href="https://teckel.io/support">teckel.io/support</a> and say what
+                happened. Do it before you build up work in the new account, because the
+                sooner we do it the less there is to reconcile.
+            </p>
+            <p>
+                <strong>There is no workaround, and this is deliberate.</strong> Only the
+                device where an account was first created can export it. A copy that arrived
+                by import cannot be exported onward &mdash; the App blocks it on purpose, so
+                that an account cannot be passed from device to device without limit. So
+                putting your account on a colleague&rsquo;s phone first does <em>not</em> give
+                you a way back: that copy can never export it to you again. If you are facing
+                a reinstall, contact us at
+                <a href="https://teckel.io/support">teckel.io/support</a> <em>before</em> you
+                uninstall anything, not afterwards.
+            </p>
+            <div class="callout">
+                <strong>Look after the phone the account was created on.</strong> That device
+                is the only one that can ever export your account &mdash; every other copy is
+                an import, and imports cannot export. In practice that means two things.
+                Never uninstall the App on that phone; update it instead. And before that
+                phone is replaced, wiped, sold or repaired, talk to us first at
+                <a href="https://teckel.io/support">teckel.io/support</a> &mdash; while it
+                still works, your options are open; afterwards they are not. Copies already
+                imported onto other devices keep working normally, so day-to-day nothing
+                changes; it is the ability to move the account again that depends on that
+                one phone.
+            </div>
+            <p>
+                <strong>Sharing across your team.</strong> The same export and import let
+                more than one person use the practice&rsquo;s account: each member of
+                staff scans the code on their own device and presses Finish, and each
+                then works in their imported copy. Every one of those scans has to be done
+                from the original phone, since only it can display the code. They are all using the practice&rsquo;s own records,
+                not separate copies.
+            </p>
+            <div class="callout">
+                <strong>Do this while you still have the old phone.</strong> The transfer
+                needs your old device to hand, showing the code, and the new one to scan
+                it. So move your wallet across <em>before</em> you replace or reset a
+                phone, not afterwards. If a phone is lost, broken or wiped without the
+                wallet having been moved, that wallet cannot be recovered: the App will
+                simply create a fresh, empty Account 1, and records created under the
+                previous wallet cannot be reached from the phone. If that happens, contact
+                <a href="https://teckel.io/support">teckel.io/support</a> before you start
+                working in the new account &mdash; we can usually move your records across.
+                This is also why the emailed copies below matter &mdash; they are yours, they are readable, and they do not
+                depend on any of this. If you are unsure, ask us first at
+                <a href="https://teckel.io/support">teckel.io/support</a>.
+            </div>
+            <div class="callout">
+                <strong>Keep your own archive.</strong> Every submission is emailed to
+                your practice with the finished paperwork attached &mdash; the PDF and
+                the original document format. Save those attachments somewhere of your
+                own (your practice server, a backup drive). That way you always hold a
+                readable, permanent record of everything you&rsquo;ve created &mdash;
+                whatever happens to keys, and even if you one day stop using teckel
+                altogether. And if you ever need to take stock or rebuild that archive,
+                just ask: <em>&ldquo;email me a list of everything I&rsquo;ve
+                submitted&rdquo;</em> &mdash; a manifest of every submission and of
+                every evidence file you&rsquo;ve uploaded, with dates and record
+                references, arrives as a printable PDF with CSV copies. And when
+                you want the records themselves, ask: <em>&ldquo;email me my
+                complete archive&rdquo;</em> &mdash; every submitted form comes back
+                as the original PDF, exactly as stored, together with your evidence
+                files in their original formats, in batched emails to your
+                practice&rsquo;s registered address (no other destination is
+                possible). If a record cannot be retrieved, the final email lists
+                it plainly &mdash; the original submission email remains your copy
+                for those.
+            </div>
+            <div class="callout">
+                When you&rsquo;re done revising, say <strong>&ldquo;submit&rdquo;</strong>
+                explicitly. Benedict will NOT auto-submit just because you confirmed a
+                single change &mdash; he waits for an explicit submission cue.
+            </div>
+        </section>
+
+        <section>
+            <h2>Your archive by email &mdash; the manifest and the full export</h2>
+            <p>
+                Two asks give you a complete, off-system copy of everything
+                you&rsquo;ve created with Benedict &mdash; useful before you change
+                phones or reinstall the App, if you ever stop using teckel, or simply to
+                rebuild your own archive.
+            </p>
+            <h3>The manifest &mdash; a list of everything</h3>
+            <p>
+                Say: <em>&ldquo;email me a list of everything I&rsquo;ve
+                submitted&rdquo;</em>. One email arrives with a printable PDF and CSV
+                copies listing <strong>every submission</strong> &mdash; date, form,
+                edition and the permanent record reference (IPFS CID) &mdash; newest
+                first, plus a second listing of <strong>every evidence file</strong>
+                you&rsquo;ve uploaded (when, which file, and what it&rsquo;s attached
+                to). Use it to take stock, or to check your own archive against what
+                teckel holds for you.
+            </p>
+            <h3>The full export &mdash; the documents themselves</h3>
+            <p>
+                Say: <em>&ldquo;email me my complete archive&rdquo;</em>. Benedict
+                fetches every submitted form back from permanent storage &mdash; the
+                original PDF, exactly as submitted &mdash; together with all your
+                evidence files in their original formats, and emails the lot in
+                batches of about ten documents per email. Three things to know:
+            </p>
+            <ul>
+                <li><strong>It only ever goes to your practice&rsquo;s registered
+                    address.</strong> There is deliberately no way to send the export
+                    anywhere else &mdash; so even someone who got hold of your access
+                    code could not use it to move your records off-site.</li>
+                <li><strong>Large archives take a little while.</strong> Benedict may
+                    be quiet for a minute or two while the documents are gathered;
+                    for very large archives he sends what fits and offers to continue
+                    with the rest.</li>
+                <li><strong>Anything that cannot be retrieved is named, never skipped
+                    silently.</strong> The final email lists any record that
+                    couldn&rsquo;t be included &mdash; for those, the original
+                    submission email remains your copy.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Guidance documents &mdash; official reference material by email</h2>
+            <p>
+                Alongside your fillable forms, your catalogue holds <strong>guidance
+                documents</strong> &mdash; official reference material such as
+                regulations, guidance leaflets and posters. These aren&rsquo;t forms to
+                fill in, so they don&rsquo;t appear in an ordinary form search;
+                Benedict sends them to you <strong>by email</strong> instead:
+            </p>
+            <ul>
+                <li><strong>See what&rsquo;s there:</strong> say <em>&ldquo;email me my
+                    guidance documents&rdquo;</em> and the full list arrives at your
+                    practice&rsquo;s registered address.</li>
+                <li><strong>Get a specific one:</strong> ask Benedict to search
+                    <em>including guidance documents</em> &mdash; for example
+                    <em>&ldquo;search for sepsis, and include guidance
+                    documents&rdquo;</em> &mdash; then ask him to email you the one you
+                    want. It arrives as an attachment under a
+                    &ldquo;Guidance document&rdquo; subject line.</li>
+            </ul>
+            <h3>Blank letters &mdash; templates you complete yourself</h3>
+            <p>
+                Your catalogue also holds <strong>blank letter templates</strong> &mdash;
+                job offers, suspension letters, disciplinary invitations and the like.
+                Benedict can <strong>list them and email you the blank</strong>, just as he
+                does a guidance document, and the emailed list marks them as letters so you
+                can tell the two apart at a glance.
+            </p>
+            <p>
+                What he will <strong>not</strong> do is read one back to you as though it
+                were guidance. A letter is a template for you to complete and send under
+                your own name &mdash; its wording is a starting point, not an authority to
+                quote. Only genuine guidance is quoted. So if you ask what the rules say
+                about suspending a member of staff, Benedict answers from the guidance and,
+                separately, offers you the blank letter. He will not blur the two.
+            </p>
+            <h3>Ask what the guidance says &mdash; and get the document&rsquo;s own words</h3>
+            <p>
+                You don&rsquo;t have to read a hundred-page document to find one line. Ask
+                Benedict directly:
+            </p>
+            <div class="callout">
+                <em>&ldquo;What does the guidance say about legionella?&rdquo;</em>
+            </div>
+            <p>
+                He searches your practice&rsquo;s guidance library and reads you the
+                relevant passage <strong>word for word, naming the document it came
+                from</strong> &mdash; then tells you how many other places mention it and
+                offers to email you the whole document so you can see it in context.
+            </p>
+            <ul>
+                <li><strong>He quotes; he doesn&rsquo;t interpret.</strong> What you hear is
+                    the document&rsquo;s own wording, never Benedict&rsquo;s summary of it
+                    and never his own knowledge. If you ask what a passage <em>means</em>,
+                    he&rsquo;ll say he can only show you what the document says &mdash; that
+                    is deliberate. On a compliance question, a paraphrase is a liability;
+                    the source&rsquo;s exact words are what you can act on and cite.</li>
+                <li><strong>If he can&rsquo;t find it, he says so.</strong> You&rsquo;ll get
+                    a plain &ldquo;I can&rsquo;t find anything in the guidance that answers
+                    that directly&rdquo; and an offer to send you the document or search
+                    your library &mdash; never an invented answer. Worth trying different
+                    words if that happens: he matches the wording your documents actually
+                    use.</li>
+                <li><strong>Some documents are pictures, not text</strong> &mdash; a scanned
+                    poster or a flowchart. Benedict will tell you plainly that there is no
+                    readable text in it and email it over for you to read directly.</li>
+            </ul>
+            <p>
+                Always read the quoted passage against the document itself before you rely
+                on it for a compliance decision &mdash; Benedict finds the words, but the
+                judgement about what applies to your practice stays yours.
+            </p>
+            <h3>Tip: read the guidance and your form side by side</h3>
+            <p>
+                A comfortable way to work: keep your form in the viewer and the
+                guidance open right next to it, on the same screen. Chrome can show
+                <strong>two tabs side by side in one window</strong> (its built-in
+                split view):
+            </p>
+            <ol>
+                <li>Open the emailed guidance document in its own Chrome tab &mdash;
+                    click the attachment in your email (PDFs open straight in the
+                    browser).</li>
+                <li>Right-click your Benedict portal tab and choose the
+                    <strong>split view</strong> option (&ldquo;Add tab to split
+                    view&rdquo; in current Chrome; on some versions, Ctrl-click both
+                    tabs first, then right-click and choose the split option).</li>
+                <li>Choose the guidance tab as the second pane. The form viewer and
+                    the guidance now sit side by side &mdash; and you can keep talking
+                    to Benedict while you read.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Ending the session</h2>
+            <p>
+                When you&rsquo;re done, say <em>&ldquo;goodbye&rdquo;</em> or
+                <em>&ldquo;that&rsquo;s everything, thanks.&rdquo;</em> Benedict says one
+                goodbye and <strong>ends the call himself</strong> &mdash; there&rsquo;s
+                no hang-up button to hunt for. Your progress is already saved as you go,
+                so simply closing the page is fine too. Your total for the session is
+                shown once the call ends.
+            </p>
+        </section>
+
+        <section>
+            <h2>Codes, timeouts and coming back</h2>
+            <p>
+                Everything here is designed so that stepping away never costs you work
+                &mdash; your answers are saved as you go. These are the four clocks
+                worth knowing:
+            </p>
+            <ul>
+                <li><strong>Your access code &mdash; about 15 minutes.</strong> A code
+                    is valid for roughly 15 minutes from the moment the teckel App
+                    generates it, and within that window the <em>same</em> code works
+                    again &mdash; if a call drops and you reconnect two minutes later,
+                    just say the code you already have. After the window, generate a
+                    fresh one.</li>
+                <li><strong>&ldquo;Welcome back&rdquo; &mdash; up to about an
+                    hour.</strong> If you reconnect <em>in the same browser tab</em>
+                    after verifying, Benedict recognises the tab and skips the code
+                    entirely &mdash; you&rsquo;ll hear <em>&ldquo;Welcome back &mdash;
+                    you&rsquo;re already verified&rdquo;</em>, and if you have a form in
+                    progress, an offer to carry on where you left off. A new tab,
+                    browser or device always starts with a code &mdash; that&rsquo;s
+                    deliberate, for your records&rsquo; privacy.</li>
+                <li><strong>Silent calls end after about 5 minutes.</strong> A voice
+                    call left open in silence is still billable time, so Benedict ends
+                    the call after roughly five silent minutes to protect your balance.
+                    Nothing is lost: reconnect in the same tab and carry on. (Thinking
+                    pauses are fine &mdash; five minutes is a long time. By text there
+                    is no clock at all.)</li>
+                <li><strong>The on-screen form after a call &mdash; a few
+                    minutes.</strong> When a call ends, the viewer keeps showing your
+                    form for a few minutes; after that it needs a fresh session to
+                    display again. Next time, just ask Benedict to show it.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Making Benedict yours &mdash; practice customisation</h2>
+            <p>
+                Every practice works a little differently, and the CQC expects your
+                compliance paperwork to reflect <strong>your</strong> practice &mdash;
+                not just a generic template. You can shape Benedict to your practice
+                simply by asking &mdash; no settings screens, nothing to fill in:
+            </p>
+            <ul>
+                <li><strong>Add your own questions</strong> to any standard form or to your patient survey &mdash; just tell Benedict, for example, &ldquo;add a question to the patient survey&rdquo;, and confirm when he reads it back. You can also <strong>switch off non-mandatory standard questions</strong> that don&rsquo;t apply to your practice, and remove or restore any of your changes whenever you like. Regulator-standard questions always stay, and every change is recorded (who, what, when) so your paperwork remains inspection-ready. <strong>A question you add appears on the copies you already have open</strong>, so you don&rsquo;t have to start the form again to see it. (Switching a question off leaves forms already in progress exactly as they are &mdash; nothing you have answered disappears from underneath you.)</li>
+                <li><strong>Your practice details on your paperwork</strong> &mdash; tell Benedict your practice name, address, phone, email, and your CQC and GDC registration numbers once (each registration has its own line on your letterhead), and they appear on your finished submissions automatically. A bare &ldquo;registration number&rdquo; could mean either regulator, so Benedict will ask which one you mean. You can also review and edit all of these on your <strong>Account Settings</strong> page &mdash; typing is the safest way to enter precise strings like phone and registration numbers, and the page shows exactly what your letterhead will carry. One thing to know: the <em>contact email</em> there is what&rsquo;s printed on your paperwork &mdash; it&rsquo;s separate from your <em>admin email</em>, where Benedict sends your reports.</li>
+                <li><strong>Renaming your practice</strong> &mdash; ask Benedict by voice and the new name appears on your letterhead, your submitted forms, <em>and</em> your portal website&rsquo;s pages.</li>
+                <li><strong>Attach evidence to a form</strong> &mdash; inspection certificates, scans and photographs, several at once if you like. Say for example <em>&ldquo;I&rsquo;d like to attach the fire safety certificate&rdquo;</em> and a secure upload page opens in the form panel, with the same link emailed to your practice address for whichever device holds the file. See <em>Your practice documents</em> above for the rest of the picture: naming a document, using one as the answer to a question, and taking it off a form or out of your records.</li>
+                <li><strong>Your admin email</strong> &mdash; the address Benedict sends completed forms, reports and links to. For safety this is never changed by voice alone: ask Benedict for <em>&ldquo;my account settings&rdquo;</em> and your practice&rsquo;s secure <strong>Account Settings</strong> page opens right here in the form panel, showing your current details &mdash; a short-lived copy of the link is also emailed to your current practice address so you can open it on another device. Update the email in a couple of clicks.</li>
+                <li><strong>Your logo and browser-tab icon</strong> &mdash; on the same <strong>Account Settings</strong> page you can upload your practice logo (PNG or JPG, under 2&nbsp;MB) and a browser-tab icon (favicon &mdash; ICO or PNG). Your logo then appears in the letterhead of your rendered and submitted paperwork, with an on/off switch right there on the page; your site picks the files up within a couple of minutes. If your practice doesn&rsquo;t already have a favicon, the free <a class="ext-link" href="https://realfavicongenerator.net/" target="_blank" rel="noopener noreferrer">realfavicongenerator.net</a> generates one from your logo in a couple of minutes.</li>
+                <li><strong>A written transcript of your sessions</strong> &mdash; the same <strong>Account Settings</strong> page carries a <strong>Session transcripts</strong> card. Tick <em>&ldquo;Email text transcripts&rdquo;</em> and a written record of each Benedict session is emailed to you once it ends &mdash; handy for checking exactly what was said, or for keeping your own notes alongside the paperwork. It is off unless you switch it on, and you can switch it off again at any time.</li>
+            </ul>
+            <p>
+                <strong>Coming soon</strong> &mdash; these will appear on the same
+                Account Settings page:
+            </p>
+            <ul>
+                <li><strong>Your logo on the website banner</strong> &mdash; the on/off switch is already on the settings page; the banner display itself arrives shortly.</li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <!-- ============================================================
+             BEST PRACTICES — cost optimisation
+             ============================================================ -->
+
+        <section>
+            <h2>How Benedict charges you</h2>
+            <p>
+                Your bill runs on a single currency: <strong>teckel credits (tc)</strong>.
+                Every action Benedict takes against your data &mdash; reading your forms,
+                writing an answer, opening the viewer, sending a submission, even just
+                listening while you think &mdash; costs a small number of tc. When your
+                session ends, that session&rsquo;s total is shown at the top of the page,
+                with the pound/pence equivalent.
+            </p>
+
+            <p>
+                There are no separate per-call fees or hidden charges. The main cost
+                driver is simply <strong>conversation time</strong> &mdash; so the habits
+                below (batching your answers, typing, and letting the web fill-in pages
+                do the long repetitive work) are where the real savings live.
+            </p>
+
+            <p>
+                <strong>While a voice call is open you are paying for the time</strong>
+                &mdash; whether you are talking, typing or thinking. So if you need to step
+                away, look something up, or deal with a patient, end the session rather than
+                leave the line open. Your progress is kept and you can pick up exactly where
+                you left off.
+            </p>
+
+            <p>
+                <strong>Typing works differently.</strong> If you use Benedict by text
+                instead of by voice, there is no charge for time at all &mdash; you can stop
+                and think for as long as you like, get interrupted, and come back to it. It
+                is slower than talking when the answers are flowing, and more forgiving when
+                they are not.
+            </p>
+            <p>
+                Submission emails and reports arrive from
+                <strong>no_reply@teckel.io</strong> &mdash; add it to your safe senders
+                so nothing lands in spam.
+            </p>
+
+            <h3>Topping up your tc balance &mdash; the teckel App</h3>
+            <p>
+                teckel handles ALL your billing through tc. To buy credit, install the
+                <strong>teckel App</strong> on your phone or tablet:
+            </p>
+            <div class="store-badges">
+                <a href="https://apps.apple.com/app/teckel/id6746805799"
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label="Download teckel on the App Store">
+                    <img src="assets/apple_app_store_badge.svg"
+                         alt="Download on the App Store">
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=io.teckel.app"
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label="Get teckel on Google Play">
+                    <img src="assets/google_play_badge.svg"
+                         alt="Get it on Google Play">
+                </a>
+            </div>
+            <p>
+                Open the teckel App and navigate to the Account you use for Benedict,
+                tap &ldquo;Purchase teckel credits&rdquo;, and choose a top-up amount.
+                The purchase clears through the App&rsquo;s in-app purchase flow
+                (handled by Google or Apple, as appropriate). The credits land
+                instantly in your teckel Account and are usable from any Benedict
+                session immediately &mdash; with one exception, below, if your balance
+                had already run out.
+            </p>
+
+            <p>
+                Benedict never stops mid-form for billing &mdash; your usage is totted
+                up and drawn from your practice&rsquo;s tc balance shortly after the
+                work is done. If your balance is running low, Benedict will mention it
+                once during a session &mdash; a gentle heads-up, never an interruption
+                &mdash; so you can top up in the teckel App before it matters.
+            </p>
+
+            <h3>What happens if I run out of teckel credits?</h3>
+            <p>
+                <strong>Benedict is switched off until you top up.</strong> He is not
+                deleted, and your forms and your answers stay in your account exactly as
+                they are. He simply stops being available to talk to, because every session
+                costs credits and there are none left to draw on.
+            </p>
+
+            <p>
+                <strong>Your stored records are a different matter, and this part
+                matters.</strong> Keeping your submitted documents in teckel&rsquo;s storage
+                costs credits, so a practice that runs out of credits may lose access to
+                records held there. Do not rely on being able to top up afterwards to get
+                them back.
+            </p>
+            <p>
+                <strong>You already hold your own copy &mdash; keep it.</strong> Every time
+                you submit a form, teckel emails your practice the finished paperwork with
+                the PDF and the original document attached. Save those attachments somewhere
+                of your own: your practice server, a backup drive, wherever you keep your
+                other records. They open without teckel, they are yours permanently, and
+                they are what protects you here. If you have been keeping them, a lapsed
+                balance costs you Benedict for a few days &mdash; it does not cost you your
+                records.
+            </p>
+            <p>
+                To bring him back, <strong>replenish your teckel credits in the teckel
+                App</strong> (see just above). Reactivation is not instant: it can take
+                <strong>up to about ten minutes</strong> from the moment your top-up
+                clears before Benedict answers again. If you open your portal in that
+                window you will see a message on the page telling you the same thing.
+            </p>
+            <div class="callout">
+                <p>
+                    This is the one case where a top-up is not usable the moment it
+                    lands. Everywhere else, credits are available immediately &mdash;
+                    the delay exists only because Benedict has to be switched back on.
+                </p>
+            </div>
+            <p>
+                You should rarely meet this, because Benedict mentions a low balance
+                once during a session before it becomes a problem, and the teckel App
+                shows your balance at any time.
+            </p>
+
+            <h3>Your credit statement &mdash; seeing exactly where credits go</h3>
+            <p>
+                The teckel App can give you an itemised statement of every charge
+                and credit on your Account. In the App, go to
+                <strong>Accounts &rarr; Statements</strong> and choose a period
+                &mdash; past 24 hours, past week, past month or past year. The
+                statement lists every entry with its date and amount in tc, newest
+                first. Your Benedict work appears in three kinds of line:
+            </p>
+            <ul>
+                <li><strong>&ldquo;DA hourly billing rollup&rdquo;</strong> &mdash;
+                    your document work. Charges are gathered up hourly, so one line
+                    covers everything done in that hour: how many actions it
+                    covered, with a short description of the work (a form
+                    submission, a catalogue search, and so on). These lines appear
+                    as a negative amount in the Credit column &mdash; read a
+                    negative credit as a charge, the same as a debit.</li>
+                <li><strong>&ldquo;chat agent conversation&rdquo;</strong> &mdash;
+                    your voice and chat sessions with Benedict, each with its
+                    session reference and duration in seconds. Conversation time is
+                    the main cost driver, so these are usually the largest lines on
+                    the statement.</li>
+                <li><strong>&ldquo;ipfs upload&rdquo; and &ldquo;ipfs pinned
+                    storage&rdquo;</strong> &mdash; your permanent records: a small
+                    charge when a submitted record is stored, and a small hourly
+                    safekeeping charge for everything held on permanent
+                    storage.</li>
+            </ul>
+
+            <p>
+                For specific pricing questions, contact <a class="ext-link" href="https://teckel.io/support" target="_blank" rel="noopener noreferrer">teckel.io/support</a>.
+            </p>
+        </section>
+
+        <section>
+            <h2>Six habits that keep costs down</h2>
+
+            <h3>1. Batch your answers when you can</h3>
+            <p>
+                Benedict can take a single sentence with many answers in it. Instead
+                of saying <em>&ldquo;yes&rdquo;</em> &middot; <em>&ldquo;yes&rdquo;</em>
+                &middot; <em>&ldquo;no&rdquo;</em> one at a time, try:
+            </p>
+            <div class="callout">
+                <em>&ldquo;Yes to questions 1, 2 and 4; no to question 3; the rest are all acknowledged.&rdquo;</em>
+            </div>
+            <p>
+                Benedict batch-fills them in one save instead of one round-trip per
+                answer &mdash; and you&rsquo;ll finish a 22-question form in about a
+                minute instead of five. The same works on daily logs:
+                <em>&ldquo;cycle one, yes, no, yellow, one three four &mdash; and the
+                rest are all yes&rdquo;</em> &mdash; or name the readings outright,
+                in any order: <em>&ldquo;Max Temp one three four, Pressure two point
+                two&rdquo;</em>.
+            </p>
+            <p>You can do this at the start (give him the whole form), in the middle (skip ahead a block), or at the end (catch up the remaining ones).</p>
+
+            <h3>2. Let the web page do the long ones</h3>
+            <p>
+                Surveys and long repetitive logs don&rsquo;t need a conversation at all.
+                Ask for <em>&ldquo;the survey link&rdquo;</em> or <em>&ldquo;the
+                log&rsquo;s web link&rdquo;</em> &mdash; Benedict can open the page on
+                screen for you, or email it so you can hand it to whoever has the
+                answers. Typing the answers into the page costs a tiny fraction of
+                saying the same answers out loud, and this is the
+                <strong>single biggest saving available</strong>.
+            </p>
+            <p>
+                The reason it saves so much is worth understanding, because it changes
+                how you use it: <strong>the conversation that sets the link up is the
+                part you pay for &mdash; the filling in is next to nothing</strong>. So
+                ask once and reuse the link all week rather than asking again for each
+                patient or each day. On a form you repeat, that is where nearly all of
+                the saving comes from.
+            </p>
+
+            <h3>3. Don&rsquo;t ask to &ldquo;see the form&rdquo; more than once per state</h3>
+            <p>
+                When you ask Benedict to show you the form on screen, he mints a fresh
+                view and the iframe loads it. If you then say <em>&ldquo;show me
+                again&rdquo;</em> within the same minute, <strong>without any new data
+                being entered</strong>, he&rsquo;ll fire another full open-viewer
+                cycle &mdash; which costs the same as the first time.
+            </p>
+            <p>The right uses of <em>&ldquo;show me the form&rdquo;</em>:</p>
+            <ul>
+                <li>At the start of a session, to see what you&rsquo;re filling.</li>
+                <li>After you&rsquo;ve filled several answers and want to verify them visually.</li>
+                <li>Just before you submit, as a final review.</li>
+            </ul>
+            <p>If nothing&rsquo;s changed since the last view, you can trust what was there &mdash; and since the view updates itself whenever anything changes, you almost never need to re-ask at all &mdash; and the <strong>Refresh</strong> button in the viewer will always redraw it on demand.</p>
+
+            <h3>4. Don&rsquo;t repeat yourself if Benedict heard you the first time</h3>
+            <p>
+                If Benedict acknowledges an answer (<em>&ldquo;Got it &mdash; that&rsquo;s
+                a yes for question seven&rdquo;</em>), it&rsquo;s recorded. You don&rsquo;t
+                need to confirm it again unless he asks you to. Each <em>&ldquo;yes I
+                did say yes&rdquo;</em> is another roundtrip.
+            </p>
+            <p>
+                If you genuinely want to <strong>change</strong> an answer, just tell
+                him plainly: <em>&ldquo;Change question seven to no.&rdquo;</em>
+                He&rsquo;ll update it once.
+            </p>
+
+            <h3>5. Step away properly &mdash; don&rsquo;t leave the line open</h3>
+            <p>
+                Take a moment to think or check a record whenever you need to. But while a
+                voice call is open you are paying for the time, quiet or not &mdash; so for
+                anything longer than a moment (a phone call, a patient), say
+                <em>&ldquo;save it, I&rsquo;ll come back later&rdquo;</em> and end the
+                session. Everything you&rsquo;ve entered is preserved, and
+                <em>&ldquo;resume the&hellip;&rdquo;</em> picks up exactly where you left
+                off. If you are working by text rather than by voice there is no clock
+                running at all, so you can leave it as long as you like.
+            </p>
+            <p>Short lookup &mdash; carry on. Real interruption &mdash; save and resume.</p>
+
+            <h3>6. Submit only once</h3>
+            <p>
+                When all your non-PII answers are in, Benedict will offer to submit.
+                Say yes (or <em>&ldquo;submit it&rdquo;</em> / <em>&ldquo;send it&rdquo;</em>)
+                and let the submission complete. If you re-ask
+                <em>&ldquo;is it sent yet?&rdquo;</em> five times, each one is a tool call.
+            </p>
+            <p>You&rsquo;ll know it&rsquo;s sent when:</p>
+            <ul>
+                <li>Benedict says the recipient has been emailed.</li>
+                <li>The form viewer shows the submitted state.</li>
+            </ul>
+            <p>
+                If you don&rsquo;t hear that confirmation in 10&ndash;20 seconds, then it&rsquo;s
+                reasonable to ask once. Before that, just wait &mdash; submission is the longest
+                single tool call (a PDF is generated, pinned to permanent storage, then emailed),
+                so it can take a few seconds.
+            </p>
+        </section>
+
+        <section>
+            <h2>What&rsquo;s already optimised for you</h2>
+            <p>A few things the system handles automatically &mdash; you don&rsquo;t need to do anything about them, but knowing they exist might save you a worried question:</p>
+            <ul>
+                <li><strong>PII fields can be left blank under GDPR.</strong> If a question asks for a patient name, date of birth, or anything else that identifies a person, you can say <em>&ldquo;skip&rdquo;</em> or simply not answer. Benedict will move on and the form will still submit cleanly.</li>
+                <li><strong>What&rsquo;s recorded is what&rsquo;s read back.</strong> Every acknowledgement comes from the saved record itself &mdash; Benedict can&rsquo;t invent fields, and he won&rsquo;t call a form complete while required answers are blank; he names what&rsquo;s missing instead.</li>
+                <li><strong>Your in-progress entry is visible.</strong> On a daily log, the on-screen form shows today&rsquo;s unsaved entry on the row marked <em>IN PROGRESS &mdash; not saved yet</em>, so what you see always matches where you are.</li>
+                <li><strong>Emails only go where you&rsquo;d expect.</strong> Submissions, reports and fill-in links go to your practice&rsquo;s registered address; any other destination needs your explicit confirmation first.</li>
+                <li><strong>The form viewer keeps itself alive.</strong> Its access link renews in the background, so a view you opened earlier keeps working &mdash; you very rarely need to ask to <em>&ldquo;reopen&rdquo;</em> it. (New answers appear on their own &mdash; the view updates itself whenever something changes while it&rsquo;s open, so you almost never need to ask twice. The <strong>Refresh</strong> button redraws it any time you want.)</li>
+                <li><strong>The cost display is simple and honest.</strong> Your total appears at the end of the session, always in the same currency at any scale: pence under &pound;1, then pounds (with the residual pence still visible).</li>
+                <li><strong>Confirmations are short.</strong> Benedict is trained to answer in one sentence when he can. If he&rsquo;s giving you a long status report, it&rsquo;s usually because you asked for one (<em>&ldquo;review my entries&rdquo;</em>, <em>&ldquo;what&rsquo;s left&rdquo;</em>, etc.).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>What costs the most (and how to spend it wisely)</h2>
+            <p>
+                The per-action fees are all small. What actually moves your total is
+                <strong>how long the conversation runs</strong> &mdash; so the fastest way to
+                keep a session cheap is to finish it, not to avoid any particular action.
+                Never skip submitting a form to save money; submitting is one of the small
+                items on this list.
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Activity</th>
+                        <th>Relative cost</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Keeping a voice call open</td>
+                        <td>Highest by far</td>
+                        <td>The length of the conversation is the main thing you pay for &mdash; everything below is small next to it</td>
+                    </tr>
+                    <tr>
+                        <td>Generating a status report</td>
+                        <td>Low</td>
+                        <td>Reads many records and produces a PDF</td>
+                    </tr>
+                    <tr>
+                        <td>Submitting the form</td>
+                        <td>Low</td>
+                        <td>PDF render + permanent storage + email &mdash; the largest of the per-action fees</td>
+                    </tr>
+                    <tr>
+                        <td>Opening the form viewer</td>
+                        <td>Very low</td>
+                        <td>Generates a fresh PDF preview</td>
+                    </tr>
+                    <tr>
+                        <td>Saving several answers in one go</td>
+                        <td>Very low</td>
+                        <td>Cheaper than the same answers individually</td>
+                    </tr>
+                    <tr>
+                        <td>Filling a single field</td>
+                        <td>Very low</td>
+                        <td>A small fixed fee per action</td>
+                    </tr>
+                    <tr>
+                        <td>Acknowledging a single answer</td>
+                        <td>Very low</td>
+                        <td>A small fixed fee per action</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                You&rsquo;ll almost never see anything outside this range. If a session
+                total comes in much higher than expected with no obvious cause, raise
+                it at <a class="ext-link" href="https://teckel.io/support" target="_blank" rel="noopener noreferrer">teckel.io/support</a> &mdash; the usual cause is
+                something asking Benedict to repeat itself.
+            </p>
+        </section>
+
+        <section>
+            <h2>When to ask for help</h2>
+            <ul>
+                <li><strong>Benedict didn&rsquo;t hear you correctly:</strong> repeat once, more slowly. He&rsquo;ll auto-correct most homophones.</li>
+                <li><strong>An answer was recorded wrong:</strong> <em>&ldquo;Change question N to X.&rdquo;</em> For a log entry you&rsquo;ve already saved: <em>&ldquo;in yesterday&rsquo;s entry, change day sheets to no.&rdquo;</em> Don&rsquo;t try to undo the previous turn &mdash; just overwrite.</li>
+                <li><strong>You&rsquo;re stuck on a date format:</strong> Benedict will accept most natural phrasings with the year (<em>&ldquo;ten May twenty-twenty-six&rdquo;</em>, <em>&ldquo;10 May 2026&rdquo;</em>, <em>&ldquo;10/05/2026&rdquo;</em>). You can also leave the year off &mdash; say <em>&ldquo;28 July&rdquo;</em> or <em>&ldquo;the 3rd of August&rdquo;</em> and he works out the most recent date that matches, then reads it back for you to confirm before anything is recorded (<em>&ldquo;that&rsquo;s Tuesday 28-Jul-2026 &mdash; shall I record it?&rdquo;</em>). He never silently guesses a date &mdash; a compliance record needs the right one. If he keeps misinterpreting, spell out the year digits.</li>
+                <li><strong>The form looks incomplete on screen:</strong> check whether the missing fields ask for personal details (PII) &mdash; those are allowed to stay blank under GDPR, and the form still submits.</li>
+                <li><strong>Benedict says &ldquo;I haven&rsquo;t loaded a form yet&rdquo;:</strong> tell him which form you want by name. He&rsquo;ll find it in the catalogue.</li>
+                <li><strong>Benedict says a form &ldquo;isn&rsquo;t set up yet&rdquo;:</strong> that template really is incomplete on our side &mdash; it&rsquo;s been flagged for the teckel team automatically. Pick another form in the meantime; nothing on your end is wrong.</li>
+                <li><strong>Anything else:</strong> head to <a class="ext-link" href="https://teckel.io/support" target="_blank" rel="noopener noreferrer">teckel.io/support</a> &mdash; pricing, billing, account changes and anything Benedict can&rsquo;t do himself are handled there.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>A note on the session cost</h2>
+            <p>
+                The figure shown when a session ends is what <strong>that session</strong>
+                cost. It does NOT show your account balance &mdash; check and top up
+                your balance in the teckel App.
+            </p>
+            <p>
+                Costs scale with conversation length and form size &mdash; the six
+                habits above are what keep a session lean. If a session comes in much
+                higher than you expected, the most likely cause is repetition &mdash;
+                re-read habits 1 and 4.
+            </p>
+        </section>
+
+        <a class="back-link" href="index.html">&larr; Back to portal</a>
+
+    </main>
+
+    <footer class="site-footer">
+        &copy; teckel.io
+    </footer>
+
+</body>
+</html>
